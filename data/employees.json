@@ -1,0 +1,58 @@
+[
+  {
+    "username": "charlie",
+    "department": "IT",
+    "roles": [
+      "admin"
+    ],
+    "password_hash": "$2b$12$m9tckgk/8C62dCnUgj1m9.kFeM5ZAzHHKUVDMTSC1Fv0aJSci7u7W"
+  },
+  {
+    "username": "alice",
+    "department": "HR",
+    "roles": [
+      "hr"
+    ],
+    "password_hash": "$2b$12$r9tKHQQKKHqoaSROqW7AJ.23DWVlUjCRdh..JvjXIDtlUXEp.oM7S"
+  },
+  {
+    "username": "bob",
+    "department": "Finance",
+    "roles": [
+      "finance"
+    ],
+    "password_hash": "$2b$12$eBOUSGf91LO/ND4D/Jtq0eq6gowP.FY8vNV4cKL2drnKQuk4o7NGW"
+  },
+  {
+    "username": "diana",
+    "department": "Eng",
+    "roles": [
+      "engineer"
+    ],
+    "password_hash": "$2b$12$YUNjlOqPTrbOFb8rJjB8T.xClZDtUkKDBgZxP.WeTrIR5Pu9pfC0q"
+  },
+  {
+    "username": "eve",
+    "department": "Intern",
+    "roles": [
+      "intern"
+    ],
+    "password_hash": "$2b$12$biNKStlyyr3RLZaTsGO6IOR.2ujGsR9A/sFD1538mylU.0HjWp7cq"
+  },
+  {
+    "username": "maya",
+    "department": "Finance",
+    "roles": [
+      "finance"
+    ],
+    "password_hash": "$2b$12$WQoaiq2yB4DNv139AIKibek939iQruCS8iSbmLsa98Y7NfB5mOvu."
+  },
+  {
+    "username": "qwerty",
+    "department": "hddyetr",
+    "roles": [
+      "intern"
+    ],
+    "password_hash": "$2b$12$8OIMmmAf6AoNAmU.tdkpKuFal6D3o59nY5seGshkfH5ypqTIvtJKe"
+  }
+]

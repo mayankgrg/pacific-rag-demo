@@ -1,0 +1,58 @@
+Acme Corp — HR Policy Document (Confidential)
+
+This document is confidential and intended for HR staff and management only. Do not distribute.
+
+Compensation Bands (Effective January 2025)
+
+Engineering:
+- L1 (Junior Engineer): $95,000 – $115,000 base
+- L2 (Engineer): $120,000 – $145,000 base
+- L3 (Senior Engineer): $150,000 – $185,000 base
+- L4 (Staff Engineer): $195,000 – $235,000 base
+- L5 (Principal Engineer): $245,000 – $290,000 base
+
+Sales:
+- SDR: $55,000 base + commission (OTE $80,000)
+- AE I: $75,000 base + commission (OTE $130,000)
+- AE II (Mid-Market): $90,000 base + commission (OTE $165,000)
+- Enterprise AE: $115,000 base + commission (OTE $230,000)
+- Sales Manager: $120,000 – $145,000 base + overrides
+
+Customer Success:
+- CSM I: $70,000 – $85,000 base
+- CSM II: $88,000 – $105,000 base
+- Senior CSM: $108,000 – $130,000 base
+
+General & Administrative (HR, Finance, Ops):
+- Associate: $65,000 – $80,000 base
+- Manager: $95,000 – $120,000 base
+- Director: $140,000 – $170,000 base
+
+Equity Grants
+All full-time employees receive equity in the form of stock options. Standard grants vest over 4 years with a 1-year cliff. Grant size at hire is tied to level and function. L3 engineers typically receive 0.05%–0.08% of the company at hire. Refresh grants are considered annually as part of the performance review cycle.
+
+Paid Time Off Policy
+Acme offers unlimited PTO for all full-time employees. Employees are expected to take a minimum of 15 days per year. Managers are responsible for ensuring their direct reports take adequate time off. Unused PTO is not paid out upon termination under the unlimited PTO policy.
+
+Parental Leave
+Primary caregivers receive 16 weeks of fully paid parental leave. Secondary caregivers receive 6 weeks of fully paid parental leave. Leave may be taken any time within the first 12 months after birth, adoption, or foster placement. Employees must notify HR at least 8 weeks before their intended leave start date.
+
+Sick Leave
+Acme provides unlimited sick leave for personal illness, medical appointments, and caring for an immediate family member. Sick leave is not tracked separately from PTO but should not be counted toward the 15-day minimum. For absences longer than 5 consecutive days, a doctor's note may be required.
+
+Performance Improvement Plans (PIPs)
+A PIP may be initiated by a manager with HR approval when an employee is not meeting expectations after informal coaching has been attempted. PIPs typically run for 60–90 days. The PIP document must outline specific, measurable performance goals, a check-in cadence, and consequences for non-completion. HR must be involved in all PIP conversations. If performance does not improve by the end of the PIP period, termination may follow.
+
+Termination Policy
+Voluntary resignations require 2 weeks notice (senior leadership: 4 weeks). Upon termination, final paychecks are issued in accordance with applicable state law. Employees must return all company equipment within 5 business days. Severance is not guaranteed but may be offered at the company's discretion, typically 1 week per year of service for involuntary terminations without cause.
+
+Anti-Harassment Policy
+Acme has a zero-tolerance policy for harassment and discrimination of any kind. All employees are required to complete annual harassment prevention training. Reports can be made to HR directly, to any manager, or anonymously via our third-party ethics hotline (ethicshotline.acmecorp.com). Retaliation against anyone who reports in good faith is strictly prohibited and grounds for immediate termination.
+
+Benefits Summary
+Medical: Aetna PPO and Kaiser HMO options. Acme covers 90% of employee premiums and 70% of dependent premiums.
+Dental: Delta Dental. Acme covers 80% of employee premiums.
+Vision: VSP. Acme covers 80% of employee premiums.
+401(k): Traditional and Roth options via Fidelity. Acme matches 4% of salary up to the IRS limit.
+Life Insurance: 2x base salary, company paid.
+Short/Long-Term Disability: Company paid.

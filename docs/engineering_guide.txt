@@ -1,0 +1,72 @@
+Acme Corp — Engineering Guide (Internal — Engineering Only)
+
+This document is for engineering staff only. It contains internal system architecture details, deployment procedures, and infrastructure information. Do not share outside the engineering team.
+
+System Architecture Overview
+
+AcmeFlow is built on a microservices architecture deployed on AWS. Services communicate via REST for synchronous calls and Apache Kafka for asynchronous event streaming. All services are containerized with Docker and orchestrated via Amazon EKS (Kubernetes).
+
+Core Services:
+- workflow-engine: The heart of AcmeFlow. Executes customer workflow definitions. Written in Go. Horizontally scalable; currently running 12 replicas in production.
+- integration-service: Manages connections to external carrier and ERP APIs. Written in Python (FastAPI). Handles OAuth token refresh, rate limiting, and retry logic for 80+ integrations.
+- notification-service: Sends emails, SMS, and webhook callbacks. Written in Node.js. Uses AWS SES for email and Twilio for SMS.
+- data-pipeline: Ingests raw shipment events from Kafka, normalizes them, and writes to the data warehouse. Built with Apache Flink and dbt on top of Snowflake.
+- auth-service: Handles customer authentication and authorization. Issues JWTs. Integrates with Okta for enterprise SSO customers.
+- admin-api: Internal API for Acme staff. Requires VPN + Okta auth. Used by support and CS teams.
+
+Infrastructure
+- Cloud provider: AWS (us-east-1 primary, us-west-2 failover)
+- Container orchestration: Amazon EKS (Kubernetes 1.29)
+- Databases: Amazon RDS PostgreSQL 15 (primary), Amazon ElastiCache Redis 7 (caching/sessions)
+- Message broker: Amazon MSK (managed Kafka)
+- Object storage: Amazon S3
+- CDN: CloudFront
+- Secrets management: AWS Secrets Manager
+- Monitoring: Datadog (APM, logs, dashboards), PagerDuty (alerting)
+
+Deployment Process
+
+We use GitHub Actions for CI/CD. Every pull request triggers:
+1. Unit tests (pytest for Python, go test for Go)
+2. Integration tests against a staging environment
+3. Container image build and push to Amazon ECR
+4. Automated security scan (Snyk)
+
+Merging to main triggers an automatic deploy to staging. Production deploys require:
+1. A deploy ticket in Jira approved by the on-call engineer and an engineering manager
+2. Deploy happens via ArgoCD (GitOps). Update the image tag in the k8s/production/ manifests folder and merge the PR.
+3. ArgoCD syncs the change to EKS within 2 minutes.
+4. Monitor Datadog for 15 minutes post-deploy. If error rate increases >0.5% or p99 latency increases >20%, roll back immediately by reverting the manifest PR.
+
+Local Development Setup
+
+Prerequisites: Docker Desktop, k9s, AWS CLI configured with your dev account credentials.
+
+Run the full stack locally:
+  git clone git@github.com:acmecorp/acmeflow.git
+  cd acmeflow
+  cp .env.example .env  # fill in your dev credentials from 1Password (vault: Engineering)
+  docker compose up
+
+The local stack includes mock versions of all third-party integrations. See docs/local-mocks.md for details on the mock data.
+
+On-Call Rotation
+
+Engineering on-call rotates weekly. The current schedule is in PagerDuty. On-call responsibilities:
+- Acknowledge P1 alerts within 5 minutes
+- For production incidents, create an incident channel in Slack (#incident-YYYYMMDD) and post updates every 30 minutes
+- Run a 5-why postmortem within 48 hours of any P1 incident
+- P1 incidents are: >1% error rate on workflow-engine for >5 minutes, or complete unavailability of any customer-facing service
+
+Internal API Keys and Credentials
+All secrets are stored in AWS Secrets Manager. Do not hardcode credentials anywhere. To access a secret locally, use:
+  aws secretsmanager get-secret-value --secret-id acme/production/[service-name] --region us-east-1
+
+The 1Password Engineering vault contains developer credentials for local environments, staging API keys, and third-party service accounts. Request access from your manager on day 1.
+
+Security Practices
+- All production changes require peer review (minimum 1 approval from a senior engineer)
+- Dependency updates are automated via Dependabot (PRs opened weekly)
+- Annual penetration test conducted by a third-party firm (last test: October 2024, report in Notion > Security)
+- SOC 2 Type II certified (certificate valid through March 2026)
+- All engineer laptops must have full-disk encryption enabled and use Acme's MDM (Jamf)

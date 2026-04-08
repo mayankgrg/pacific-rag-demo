@@ -1,0 +1,70 @@
+Acme Corp — Q4 2024 Financial Summary (Restricted — Finance and Leadership Only)
+
+This document contains material non-public financial information. Unauthorized distribution is a violation of company policy and may have legal consequences.
+
+Revenue
+
+Total Q4 2024 revenue: $4.2M
+- Subscription revenue: $3.6M (86% of total)
+- Professional services revenue: $0.6M (14% of total)
+
+Full-year 2024 revenue: $14.8M
+Year-over-year growth: +38% (vs. $10.7M in FY2023)
+
+ARR as of December 31, 2024: $15.2M
+- Net new ARR added in Q4: $1.1M
+- Churned ARR in Q4: $180K
+- Net Revenue Retention (NRR): 118%
+
+ARR by customer segment:
+- Enterprise (>$100K ACV): $8.4M (55% of ARR)
+- Mid-Market ($20K–$100K ACV): $5.6M (37% of ARR)
+- SMB (<$20K ACV): $1.2M (8% of ARR)
+
+Expenses
+
+Total Q4 2024 operating expenses: $3.8M
+Monthly burn rate: $1.27M (Q4 average)
+
+Breakdown:
+- R&D (Engineering): $1.45M (38%)
+- Sales & Marketing: $1.14M (30%)
+- G&A (HR, Finance, Legal, Ops): $0.76M (20%)
+- Customer Success: $0.45M (12%)
+
+Headcount-related costs (salaries + benefits + equity): $3.1M of total OpEx
+Non-headcount OpEx (AWS, tools, office, travel): $0.7M
+
+Operating Income / Loss
+
+Q4 2024 operating loss: -$620K
+Q4 2024 operating margin: -14.8%
+
+This is an improvement from Q3 2024 operating loss of -$890K (-24.6% margin), driven by revenue growth outpacing expense growth.
+
+Cash Position
+
+Cash and cash equivalents as of December 31, 2024: $11.4M
+Runway at current burn rate: approximately 9 months
+
+Note: The company is actively in Series B fundraising discussions. A term sheet is expected by end of Q1 2025. Details are strictly confidential.
+
+Q1 2025 Projections
+
+Projected Q1 2025 revenue: $4.7M–$5.0M
+Projected Q1 2025 ARR at end of quarter: $16.5M–$17.0M
+Projected operating loss: -$500K to -$700K (improvement driven by sales productivity gains and headcount stabilization)
+
+Key Metrics
+
+Customer count: 418 (up from 376 at end of Q3 2024)
+Average ACV: $36,400
+Gross margin: 74% (up from 71% in Q3 2024)
+CAC payback period: 14 months
+LTV:CAC ratio: 4.2x
+
+Board and Investor Notes
+
+This summary was presented to the board on January 15, 2025. The board approved the Q1 2025 operating plan, including the hiring freeze on non-revenue-generating roles and the acceleration of the Series B process. The next board meeting is scheduled for April 10, 2025.
+
+Questions about this document should be directed to CFO Maria Chen (maria.chen@acmecorp.com) or VP Finance David Park (david.park@acmecorp.com).

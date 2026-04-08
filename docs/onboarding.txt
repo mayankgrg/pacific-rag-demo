@@ -1,0 +1,52 @@
+Acme Corp — New Employee Onboarding Guide
+
+Welcome to Acme Corp! This guide covers everything you need to get set up in your first week.
+
+Day 1: Accounts and Access
+Your manager will have submitted an IT request before your start date. On day 1, check your personal email for an invitation from IT to set up your Acme Google Workspace account (yourname@acmecorp.com). Once your Google account is active, you can use Google SSO to log into most of our tools.
+
+Tools you will be provisioned on day 1:
+- Google Workspace (email, calendar, Drive)
+- Slack (our primary communication tool)
+- Notion (company wiki and documentation)
+- Jira (engineering and project tracking)
+- Zoom (video calls)
+- Expensify (expense reporting)
+
+Laptop Setup
+All employees receive either a MacBook Pro (14") or a Dell XPS 15, depending on preference. Engineering laptops come pre-imaged with our standard developer setup. If you are an engineer, follow the onboarding runbook in the #engineering-onboarding Slack channel to complete your local dev environment setup.
+
+Key Slack Channels to Join
+- #general — company-wide announcements
+- #random — non-work chat
+- #team-[yourteam] — your team's main channel
+- #help-it — IT support requests
+- #help-hr — HR questions
+- #kudos — celebrate teammates
+
+Who to Meet in Your First Week
+1. Your manager — schedule a 1:1 on day 1 to align on 30/60/90 day goals
+2. Your team — attend your team's weekly standup
+3. Your onboarding buddy — a peer assigned by HR to help you navigate
+4. HR (People Ops) — schedule a 30-minute intro with your HR business partner
+
+Benefits Enrollment
+You have 30 days from your start date to enroll in benefits. Log into Rippling (rippling.acmecorp.com) using Google SSO to review your options and make selections. Available benefits include medical (Aetna and Kaiser options), dental, vision, 401(k) with 4% company match, and commuter benefits. If you have questions about benefits, reach out to hr@acmecorp.com.
+
+Expense Policy
+Acme reimburses reasonable business expenses including travel, meals with clients or candidates, software subscriptions, and home office equipment (up to $500 for new hires). Submit all expenses in Expensify within 30 days of the expense. Expenses over $200 require manager approval before purchase. Do not expense alcohol without prior approval.
+
+Company All-Hands
+We hold a company-wide all-hands every other Friday at 10am PT via Zoom. Attendance is expected for all full-time employees. Recordings are posted to Notion afterward for anyone who cannot attend live.
+
+Performance Reviews
+Acme runs performance reviews twice per year: in June and December. Your first review will be in your first full cycle after joining. Between reviews, you will have weekly 1:1s with your manager and quarterly goal check-ins.
+
+Time Off
+We offer unlimited PTO. The expectation is that full-time employees take a minimum of 15 days per year. To request time off, submit a request in Rippling and notify your manager at least two weeks in advance for absences of 3 or more days. All company holidays are listed in the Acme Google Calendar under "Acme Corp Holidays."
+
+Learning and Development
+Each employee has a $1,000 annual learning budget for courses, books, and conferences. Submit L&D spend in Expensify with the tag "L&D." Engineering employees also have access to a company O'Reilly subscription.
+
+Questions?
+If anything is unclear, your onboarding buddy is your first point of contact. For IT issues, message #help-it in Slack. For HR questions, message hr@acmecorp.com or your HR business partner.

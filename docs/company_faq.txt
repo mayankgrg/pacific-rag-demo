@@ -1,0 +1,37 @@
+Acme Corp — Company FAQ
+
+What does Acme Corp do?
+Acme Corp is a B2B SaaS company that provides workflow automation software for mid-market logistics companies. Our flagship product, AcmeFlow, helps operations teams automate shipment tracking, carrier communication, and invoice reconciliation. We serve over 400 customers across North America and Europe.
+
+When was Acme Corp founded?
+Acme Corp was founded in 2018 by CEO Jordan Lee and CTO Sam Patel in San Francisco, California. The company started with a focus on last-mile delivery optimization and expanded into full logistics workflow management in 2020.
+
+Where are your offices?
+Our headquarters is in San Francisco, CA (550 Howard Street, Suite 400). We also have offices in New York (for enterprise sales), Austin (for engineering), and London (for our European operations). Remote employees are distributed across 12 countries.
+
+How many employees does Acme Corp have?
+As of Q4 2024, Acme Corp has 142 full-time employees globally. This includes 58 in engineering, 31 in sales and marketing, 22 in customer success, 18 in operations, and 13 in HR, finance, and legal.
+
+What is Acme Corp's mission?
+Our mission is to eliminate manual work from logistics operations so that supply chain teams can focus on strategy rather than firefighting. We believe that well-designed automation leads to faster deliveries, fewer errors, and happier customers.
+
+What is AcmeFlow?
+AcmeFlow is our core product — a no-code workflow automation platform built specifically for logistics. It integrates with over 80 carriers, ERPs, and warehouse management systems out of the box. Key features include: automated shipment status updates, exception management workflows, carrier rate benchmarking, and AI-powered invoice dispute resolution.
+
+How do customers use AcmeFlow?
+Customers connect AcmeFlow to their existing systems (TMS, WMS, ERP) via pre-built integrations or our REST API. Once connected, they use our visual workflow builder to automate repetitive tasks. For example, a customer might set up a workflow that automatically flags any shipment delayed by more than 4 hours and sends an alert to the account manager and the end customer.
+
+What is your pricing model?
+AcmeFlow is priced on a per-seat plus usage basis. Customers pay a monthly platform fee based on the number of users, plus a variable fee based on the number of automated workflow runs per month. We offer three tiers: Starter, Growth, and Enterprise. Enterprise plans include dedicated customer success managers and SLA guarantees.
+
+How do I contact support?
+For product support, customers can reach us at support@acmecorp.com or through the in-app help center. Enterprise customers have access to a dedicated Slack channel with their customer success manager. Our support team operates 24/7 for P1 incidents.
+
+Is Acme Corp hiring?
+Yes! We are actively hiring across engineering, sales, and customer success. Open roles are listed at acmecorp.com/careers. We are especially looking for senior backend engineers, enterprise account executives, and logistics domain experts.
+
+What is Acme Corp's tech stack?
+Our product is built on a microservices architecture running on AWS. The frontend is React, the backend services are a mix of Python (FastAPI) and Go, and we use PostgreSQL and Redis for data storage. Our data pipeline is built on Apache Kafka and dbt.
+
+Does Acme Corp have a partner program?
+Yes. Our partner program includes technology partners (integrations), implementation partners (consultancies that help customers deploy AcmeFlow), and referral partners. Partners get access to dedicated technical resources, co-marketing opportunities, and revenue share on referred deals.

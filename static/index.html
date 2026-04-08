@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pacific RAG Demo — Acme Corp</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+    }
+
+    /* ─── Full-height shell ─────────────────────────────────────── */
+    #shell {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.25rem 1rem 0;
+    }
+
+    .page { width: 100%; max-width: 760px; }
+
+    /* ─── Header ────────────────────────────────────────────────── */
+    header { text-align: center; margin-bottom: 1.25rem; }
+    header h1 { font-size: 1.4rem; font-weight: 700; color: #f8fafc; letter-spacing: -0.4px; }
+    header p  { margin-top: 0.25rem; font-size: 0.78rem; color: #64748b; }
+
+    /* ─── Card ──────────────────────────────────────────────────── */
+    .card {
+      background: #1e2130; border: 1px solid #2d3148;
+      border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+    }
+    .card h2 {
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 0.9rem;
+    }
+
+    /* ─── Inputs ────────────────────────────────────────────────── */
+    input[type="text"], input[type="password"] {
+      flex: 1; background: #0f1117; border: 1px solid #2d3148;
+      border-radius: 8px; color: #e2e8f0; padding: 0.6rem 0.8rem;
+      font-size: 0.875rem; outline: none; transition: border-color 0.15s;
+    }
+    input:focus { border-color: #6366f1; }
+    .input-row  { display: flex; gap: 0.6rem; margin-bottom: 0.6rem; }
+
+    /* ─── Buttons ───────────────────────────────────────────────── */
+    button {
+      background: #6366f1; color: #fff; border: none; border-radius: 8px;
+      padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600;
+      cursor: pointer; transition: background 0.15s; white-space: nowrap;
+    }
+    button:hover    { background: #4f46e5; }
+    button:disabled { background: #2d3148; color: #475569; cursor: not-allowed; }
+    .btn-sm {
+      background: transparent; border: 1px solid #2d3148;
+      color: #94a3b8; padding: 0.35rem 0.75rem; font-size: 0.75rem;
+      border-radius: 7px;
+    }
+    .btn-sm:hover { border-color: #6366f1; color: #e2e8f0; background: transparent; }
+
+    /* ─── User bar ──────────────────────────────────────────────── */
+    .user-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #1e2130; border: 1px solid #2d3148;
+      border-radius: 10px; padding: 0.6rem 0.9rem; margin-bottom: 0.75rem;
+    }
+    .user-info  { display: flex; align-items: center; gap: 0.65rem; }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%; background: #312e81;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.8rem; color: #a5b4fc; flex-shrink: 0;
+    }
+    .user-name  { font-weight: 600; font-size: 0.85rem; }
+    .user-meta  { font-size: 0.7rem; color: #64748b; }
+    .bar-right  { display: flex; align-items: center; gap: 0.5rem; }
+
+    .badge {
+      display: inline-block; padding: 0.15rem 0.45rem; border-radius: 99px;
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .badge-admin    { background: #7f1d1d; color: #fca5a5; }
+    .badge-hr       { background: #1e3a5f; color: #93c5fd; }
+    .badge-finance  { background: #14532d; color: #86efac; }
+    .badge-engineer { background: #3b1d6e; color: #c4b5fd; }
+    .badge-intern   { background: #1c1917; color: #a8a29e; }
+
+    /* ─── Chat shell ────────────────────────────────────────────── */
+    /*
+      The chat pane fills all remaining vertical space.
+      We use a fixed calc height so the message list is always
+      scrollable and never collapses.
+    */
+    #chat-pane {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      flex-direction: column;
+      /* full viewport minus header (~80px), user-bar (~52px), input-bar (~68px), paddings */
+      height: calc(100vh - 280px);
+      min-height: 320px;
+      background: #1e2130;
+      border: 1px solid #2d3148;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+
+    /* scrollable history */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      scrollbar-width: thin;
+      scrollbar-color: #2d3148 transparent;
+    }
+    #messages::-webkit-scrollbar { width: 5px; }
+    #messages::-webkit-scrollbar-thumb { background: #2d3148; border-radius: 3px; }
+
+    /* empty state */
+    #empty-hint {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      color: #475569;
+      font-size: 0.82rem;
+      text-align: center;
+      pointer-events: none;
+    }
+    #empty-hint .ico { font-size: 1.8rem; margin-bottom: 0.25rem; }
+
+    /* ─── Message bubbles ───────────────────────────────────────── */
+    .msg         { display: flex; flex-direction: column; max-width: 82%; gap: 0.2rem; }
+    .msg.user    { align-self: flex-end;   align-items: flex-end; }
+    .msg.bot     { align-self: flex-start; align-items: flex-start; }
+
+    .msg-label   { font-size: 0.67rem; color: #475569; padding: 0 0.3rem; }
+
+    .bubble {
+      padding: 0.6rem 0.85rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .msg.user .bubble {
+      background: #3730a3;
+      color: #e0e7ff;
+      border-bottom-right-radius: 3px;
+    }
+    .msg.bot .bubble {
+      background: #151823;
+      border: 1px solid #2d3148;
+      color: #e2e8f0;
+      border-bottom-left-radius: 3px;
+    }
+    .msg.bot .bubble.pending {
+      color: #475569;
+      font-style: italic;
+    }
+
+    /* chips under assistant bubble */
+    .chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.25rem; padding: 0 0.2rem; }
+    .chip  {
+      padding: 0.1rem 0.4rem; border-radius: 5px;
+      font-size: 0.67rem; line-height: 1.6;
+    }
+    .chip-src     { background: #1e2130; border: 1px solid #2d3148; color: #a5b4fc; font-family: monospace; }
+    .chip-blocked { background: #450a0a; border: 1px solid #7f1d1d; color: #fca5a5; }
+    .chip-ms      { background: #1e2130; border: 1px solid #2d3148; color: #64748b; }
+
+    /* ─── Input bar ─────────────────────────────────────────────── */
+    #input-bar {
+      border-top: 1px solid #2d3148;
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+      background: #1a1e2e;
+      flex-shrink: 0;
+    }
+    #query-input {
+      flex: 1;
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 8px;
+      color: #e2e8f0;
+      padding: 0.55rem 0.8rem;
+      font-size: 0.875rem;
+      font-family: inherit;
+      outline: none;
+      resize: none;
+      max-height: 110px;
+      line-height: 1.5;
+      transition: border-color 0.15s;
+    }
+    #query-input:focus    { border-color: #6366f1; }
+    #query-input:disabled { opacity: 0.45; }
+    #send-btn {
+      background: #6366f1;
+      border-radius: 8px;
+      padding: 0 0.9rem;
+      height: 38px;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    #send-btn:hover { background: #4f46e5; }
+
+    /* ─── Login helpers ─────────────────────────────────────────── */
+    .hint { font-size: 0.72rem; color: #475569; margin-top: 0.4rem; line-height: 1.6; }
+    .hint code {
+      background: #0f1117; border: 1px solid #2d3148;
+      border-radius: 3px; padding: 0.05rem 0.3rem;
+      font-size: 0.68rem; color: #94a3b8;
+    }
+    .err-box {
+      background: #450a0a; border: 1px solid #7f1d1d;
+      border-radius: 8px; padding: 0.6rem 0.8rem;
+      font-size: 0.82rem; color: #fca5a5; margin-top: 0.5rem;
+    }
+    .ok-box {
+      background: #052e16; border: 1px solid #14532d;
+      border-radius: 8px; padding: 0.6rem 0.8rem;
+      font-size: 0.82rem; color: #86efac; margin-top: 0.5rem;
+    }
+
+    /* ── Auth tabs ──────────────────────────────────────────────── */
+    .auth-tabs {
+      display: flex; gap: 0; margin-bottom: 1.1rem;
+      border-bottom: 1px solid #2d3148;
+    }
+    .auth-tab {
+      padding: 0.45rem 1rem; font-size: 0.8rem; font-weight: 600;
+      color: #475569; cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: color 0.15s, border-color 0.15s;
+      background: none; border-radius: 0;
+    }
+    .auth-tab:hover    { color: #94a3b8; background: none; }
+    .auth-tab.active   { color: #a5b4fc; border-bottom-color: #6366f1; background: none; }
+
+    /* ── Form rows ──────────────────────────────────────────────── */
+    .form-row { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .form-row label { font-size: 0.75rem; color: #94a3b8; font-weight: 500; }
+    .form-row input, .form-row select {
+      background: #0f1117; border: 1px solid #2d3148; border-radius: 8px;
+      color: #e2e8f0; padding: 0.6rem 0.8rem; font-size: 0.875rem;
+      outline: none; transition: border-color 0.15s; width: 100%;
+    }
+    .form-row input:focus, .form-row select:focus { border-color: #6366f1; }
+    .form-row select option { background: #1e2130; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .form-grid .form-row { margin-bottom: 0; }
+
+    /* ─── Spinner ───────────────────────────────────────────────── */
+    .spin {
+      display: inline-block; width: 12px; height: 12px;
+      border: 2px solid #374151; border-top-color: #6366f1;
+      border-radius: 50%; animation: rot 0.65s linear infinite;
+      vertical-align: middle; margin-right: 4px;
+    }
+    @keyframes rot { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+<div id="shell">
+
+  <header class="page">
+    <h1>Acme Corp Internal Assistant</h1>
+    <p>Permission-aware RAG &mdash; built for Pacific</p>
+  </header>
+
+  <!-- ══ AUTH PANEL ════════════════════════════════════════════ -->
+  <div class="card page" id="login-panel">
+
+    <!-- tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login"    onclick="switchTab('login')">Sign in</button>
+      <button class="auth-tab"        id="tab-register" onclick="switchTab('register')">Create account</button>
+    </div>
+
+    <!-- ── Login form ── -->
+    <div id="form-login">
+      <div class="form-row">
+        <label>Username</label>
+        <input type="text" id="login-username" placeholder="e.g. alice" autocomplete="username" />
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
+      </div>
+      <button id="login-btn" onclick="doLogin()" style="width:100%;margin-top:0.25rem">Sign in</button>
+      <div class="hint" style="margin-top:0.65rem">
+        Demo users &mdash; all passwords <code>secret123</code> &nbsp;·&nbsp;
+        <code>charlie</code>&nbsp;admin &nbsp;·&nbsp;
+        <code>alice</code>&nbsp;hr &nbsp;·&nbsp;
+        <code>bob</code>&nbsp;finance &nbsp;·&nbsp;
+        <code>diana</code>&nbsp;engineer &nbsp;·&nbsp;
+        <code>eve</code>&nbsp;intern
+      </div>
+      <div id="login-err"></div>
+    </div>
+
+    <!-- ── Register form ── -->
+    <div id="form-register" style="display:none">
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Username <span style="color:#475569">(letters, digits, _)</span></label>
+          <input type="text" id="reg-username" placeholder="e.g. john_doe" autocomplete="off" />
+        </div>
+        <div class="form-row">
+          <label>Department</label>
+          <input type="text" id="reg-department" placeholder="e.g. Marketing" />
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Password <span style="color:#475569">(min 8 chars)</span></label>
+          <input type="password" id="reg-password" placeholder="Password" autocomplete="new-password" />
+        </div>
+        <div class="form-row">
+          <label>Confirm password</label>
+          <input type="password" id="reg-confirm" placeholder="Repeat password" autocomplete="new-password" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Role</label>
+        <select id="reg-role">
+          <option value="">— select a role —</option>
+          <option value="hr">HR — can access HR policy documents</option>
+          <option value="finance">Finance — can access financial reports</option>
+          <option value="engineer">Engineer — can access engineering guides</option>
+          <option value="intern">Intern — public documents only</option>
+        </select>
+      </div>
+      <div class="hint" style="margin-bottom:0.6rem">
+        Admin accounts can only be created by an existing admin. New accounts log in immediately after creation.
+      </div>
+      <button id="reg-btn" onclick="doRegister()" style="width:100%">Create account</button>
+      <div id="reg-err"></div>
+    </div>
+
+  </div>
+
+  <!-- ══ APP ════════════════════════════════════════════════════ -->
+  <div id="app-panel" class="page" style="display:none">
+
+    <!-- user bar -->
+    <div class="user-bar">
+      <div class="user-info">
+        <div class="avatar" id="avatar"></div>
+        <div>
+          <div class="user-name" id="disp-name"></div>
+          <div class="user-meta" id="disp-dept"></div>
+        </div>
+      </div>
+      <div class="bar-right">
+        <span class="badge" id="role-badge"></span>
+        <button class="btn-sm" onclick="clearChat()">Clear</button>
+        <button class="btn-sm" onclick="doLogout()">Sign out</button>
+      </div>
+    </div>
+
+    <!-- chat pane -->
+    <div id="chat-pane">
+      <div id="messages">
+        <div id="empty-hint">
+          <span class="ico">💬</span>
+          <span>Ask anything about Acme Corp.</span>
+          <span style="font-size:0.72rem;color:#334155">Your role determines which documents you can access.</span>
+        </div>
+      </div>
+
+      <div id="input-bar">
+        <textarea id="query-input" rows="1"
+          placeholder="Ask a question… (Enter to send, Shift+Enter for newline)"
+          oninput="autoResize(this)"></textarea>
+        <button id="send-btn" onclick="doQuery()" title="Send (Enter)">&#9658;</button>
+      </div>
+    </div>
+
+  </div><!-- /app-panel -->
+
+</div><!-- /shell -->
+
+<script>
+  // ─── State ────────────────────────────────────────────────────
+  let currentUser = null;
+  let chatHistory = [];   // [{role,content}, …] — sent with each request
+
+  // ─── Tab switcher ─────────────────────────────────────────────
+  function switchTab(tab) {
+    const isLogin = tab === 'login';
+    document.getElementById('form-login').style.display    = isLogin ? 'block' : 'none';
+    document.getElementById('form-register').style.display = isLogin ? 'none'  : 'block';
+    document.getElementById('tab-login').classList.toggle('active',    isLogin);
+    document.getElementById('tab-register').classList.toggle('active', !isLogin);
+    document.getElementById('login-err').innerHTML = '';
+    document.getElementById('reg-err').innerHTML   = '';
+  }
+
+  // ─── Auth ─────────────────────────────────────────────────────
+  async function doLogin() {
+    const un  = document.getElementById('login-username').value.trim();
+    const pw  = document.getElementById('login-password').value;
+    const err = document.getElementById('login-err');
+    const btn = document.getElementById('login-btn');
+    err.innerHTML = '';
+    if (!un || !pw) { showErr(err, 'Please enter username and password.'); return; }
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span>Signing in…';
+    try {
+      const res  = await fetch('/login', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: un, password: pw }),
+      });
+      const data = await res.json();
+      if (!res.ok) { showErr(err, data.error || 'Login failed.'); return; }
+      currentUser = data;
+      showApp();
+    } catch { showErr(err, 'Network error. Please try again.'); }
+    finally   { btn.disabled = false; btn.textContent = 'Sign in'; }
+  }
+
+  async function doRegister() {
+    const un   = document.getElementById('reg-username').value.trim();
+    const dept = document.getElementById('reg-department').value.trim();
+    const pw   = document.getElementById('reg-password').value;
+    const pw2  = document.getElementById('reg-confirm').value;
+    const role = document.getElementById('reg-role').value;
+    const err  = document.getElementById('reg-err');
+    const btn  = document.getElementById('reg-btn');
+    err.innerHTML = '';
+
+    if (!un || !dept || !pw || !pw2 || !role) { showErr(err, 'Please fill in all fields.'); return; }
+    if (pw !== pw2)                            { showErr(err, 'Passwords do not match.'); return; }
+    if (pw.length < 8)                         { showErr(err, 'Password must be at least 8 characters.'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span>Creating account…';
+    try {
+      const res  = await fetch('/register', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: un, department: dept, password: pw, role }),
+      });
+      const data = await res.json();
+      if (!res.ok) { showErr(err, data.error || 'Registration failed.'); return; }
+      currentUser = data;
+      showApp();
+    } catch { showErr(err, 'Network error. Please try again.'); }
+    finally   { btn.disabled = false; btn.textContent = 'Create account'; }
+  }
+
+  async function doLogout() {
+    await fetch('/logout', { method: 'POST', credentials: 'same-origin' });
+    currentUser = null; chatHistory = [];
+    document.getElementById('app-panel').style.display   = 'none';
+    document.getElementById('login-panel').style.display = 'block';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('login-err').innerHTML = '';
+  }
+
+  // ─── Query ────────────────────────────────────────────────────
+  async function doQuery() {
+    const input = document.getElementById('query-input');
+    const q     = input.value.trim();
+    if (!q) return;
+
+    const btn = document.getElementById('send-btn');
+    input.value = ''; input.style.height = '';
+    btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+
+    addBubble('user', q);
+    const tid = 'think-' + Date.now();
+    addThinking(tid);
+
+    try {
+      const res  = await fetch('/query', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, history: chatHistory }),
+      });
+      removeBubble(tid);
+      if (res.status === 401) { addBubble('bot', 'Session expired. Please sign in again.'); return; }
+      const d = await res.json();
+      addBubble('bot', d.answer, d.sources || [], d.chunks_blocked, d.latency_ms);
+      // update history
+      chatHistory.push({ role: 'user',      content: q });
+      chatHistory.push({ role: 'assistant', content: d.answer });
+      if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+    } catch {
+      removeBubble(tid);
+      addBubble('bot', 'Request failed. Please try again.');
+    } finally { btn.disabled = false; btn.innerHTML = '&#9658;'; }
+  }
+
+  function clearChat() {
+    chatHistory = [];
+    const msgs = document.getElementById('messages');
+    msgs.innerHTML = `
+      <div id="empty-hint">
+        <span class="ico">💬</span>
+        <span>Ask anything about Acme Corp.</span>
+        <span style="font-size:.72rem;color:#334155">Your role determines which documents you can access.</span>
+      </div>`;
+  }
+
+  // ─── Bubble helpers ───────────────────────────────────────────
+  function addBubble(role, text, sources, blocked, ms) {
+    const hint = document.getElementById('empty-hint');
+    if (hint) hint.remove();
+
+    const msgs = document.getElementById('messages');
+
+    const wrap  = document.createElement('div');
+    wrap.className = 'msg ' + role;
+
+    const label = document.createElement('div');
+    label.className = 'msg-label';
+    // textContent only — never innerHTML — XSS safe
+    label.textContent = role === 'user' ? (currentUser ? currentUser.username : 'You') : 'Assistant';
+    wrap.appendChild(label);
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;    // plain text, never HTML
+    wrap.appendChild(bubble);
+
+    // chips (assistant only)
+    if (role === 'bot' && (sources?.length || blocked > 0 || ms > 0)) {
+      const chips = document.createElement('div');
+      chips.className = 'chips';
+
+      (sources || []).forEach(s => {
+        const c = document.createElement('span');
+        c.className = 'chip chip-src';
+        c.textContent = s + '.txt';
+        chips.appendChild(c);
+      });
+      if (blocked > 0) {
+        const c = document.createElement('span');
+        c.className = 'chip chip-blocked';
+        c.textContent = blocked + ' chunks blocked';
+        chips.appendChild(c);
+      }
+      if (ms > 0) {
+        const c = document.createElement('span');
+        c.className = 'chip chip-ms';
+        c.textContent = ms + ' ms';
+        chips.appendChild(c);
+      }
+      wrap.appendChild(chips);
+    }
+
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function addThinking(id) {
+    const hint = document.getElementById('empty-hint');
+    if (hint) hint.remove();
+    const msgs = document.getElementById('messages');
+    const wrap = document.createElement('div');
+    wrap.className = 'msg bot'; wrap.id = id;
+    const label = document.createElement('div');
+    label.className = 'msg-label'; label.textContent = 'Assistant';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble pending';
+    bubble.innerHTML = '<span class="spin"></span>Thinking…';
+    wrap.appendChild(label); wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeBubble(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  }
+
+  // ─── Show app ─────────────────────────────────────────────────
+  function showApp() {
+    document.getElementById('login-panel').style.display = 'none';
+    document.getElementById('app-panel').style.display   = 'block';
+
+    const role = currentUser.roles[0];
+    document.getElementById('avatar').textContent    = currentUser.username[0].toUpperCase();
+    document.getElementById('disp-name').textContent = currentUser.username;
+    document.getElementById('disp-dept').textContent = currentUser.department + ' · Acme Corp';
+    const b = document.getElementById('role-badge');
+    b.textContent = role; b.className = 'badge badge-' + role;
+
+    clearChat();
+    document.getElementById('query-input').focus();
+  }
+
+  function showErr(el, msg) {
+    el.innerHTML = '';
+    const d = document.createElement('div');
+    d.className = 'err-box'; d.textContent = msg;
+    el.appendChild(d);
+  }
+
+  // ─── UX helpers ───────────────────────────────────────────────
+  function autoResize(el) {
+    el.style.height = '';
+    el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('query-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); doQuery(); }
+    });
+    document.getElementById('login-password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+    document.getElementById('reg-confirm').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doRegister();
+    });
+  });
+</script>
+</body>
+</html>
