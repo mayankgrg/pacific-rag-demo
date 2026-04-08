@@ -45,8 +45,11 @@ def verify_login(username: str, password: str) -> Optional[dict]:
     employees = _load_employees()
     matched = next((e for e in employees if e["username"] == username), None)
 
-    # Always run bcrypt check to avoid timing-based username enumeration
-    dummy_hash = "$2b$12$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    # Always run bcrypt check to avoid timing-based username enumeration.
+    # The dummy hash is a pre-computed valid bcrypt hash; it will never match
+    # any real password but ensures checkpw() runs in constant time for
+    # non-existent usernames.
+    dummy_hash = "$2b$12$LqCimZ4P.p7HmjS9KJSlw.Rt7FzQyIFMxJRtxGBGu/l.VLRlj.oPq"
     stored_hash = matched["password_hash"].encode() if matched else dummy_hash.encode()
     password_ok = bcrypt.checkpw(password.encode(), stored_hash)
 
